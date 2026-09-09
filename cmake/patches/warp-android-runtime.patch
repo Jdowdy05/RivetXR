@@ -1,0 +1,29 @@
+diff --git a/warp/native/cuBQL/math/common.h b/warp/native/cuBQL/math/common.h
+--- a/warp/native/cuBQL/math/common.h
++++ b/warp/native/cuBQL/math/common.h
+@@ -20,7 +20,7 @@
+ #include <cfloat>
+ #include <algorithm>
+ #include <sstream>
+-#ifdef __GNUC__
++#if defined(__GNUC__) && !defined(__ANDROID__)
+ # include <execinfo.h>
+ # include <sys/time.h>
+ #endif
+@@ -108,5 +108,5 @@
+   namespace detail {
+     inline static std::string backtrace()
+     {
+-#ifdef __GNUC__
++#if defined(__GNUC__) && !defined(__ANDROID__)
+       static const int max_frames = 16;
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -246,4 +246,5 @@
+ add_library(warp SHARED ${WARP_SOURCES})
+ add_dependencies(warp warp_generated_headers)
+-warp_set_shared_target_output(warp warp)
++# Android package entries and ELF SONAME must both be lib-prefixed.
++warp_set_shared_target_output(warp libwarp)
+ warp_add_common_cxx_options(warp)

@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "format": "QMSH",
+  "format_version": 1,
+  "urdf_relative_path": "robots/panda_arm_hand.urdf",
+  "body_count": 12,
+  "visual_count": 11,
+  "max_total_geometry_bytes_exclusive": 12582912,
+  "max_vertex_error_m": 0.001,
+  "max_vertices_per_asset": 65535,
+  "max_indices_per_asset": 3145728,
+  "dae_unit_meter": 1,
+  "dae_up_axis": "Z_UP",
+  "dae_matrix_convention": "authored row-major matrix, column-vector positions; parent times child",
+  "dae_lines_policy": "validate VERTEX-only loose line segments, record discarded_line_segment_count, omit from triangle surfaces",
+  "bodies": [
+    {"name":"panda_link0","asset":"link0.qmsh","position":[0,0,0],"rotation":[0,0,0,1],"scale":[1,1,1]},
+    {"name":"panda_link1","asset":"link1.qmsh","position":[0,0,0],"rotation":[0,0,0,1],"scale":[1,1,1]},
+    {"name":"panda_link2","asset":"link2.qmsh","position":[0,0,0],"rotation":[0,0,0,1],"scale":[1,1,1]},
+    {"name":"panda_link3","asset":"link3.qmsh","position":[0,0,0],"rotation":[0,0,0,1],"scale":[1,1,1]},
+    {"name":"panda_link4","asset":"link4.qmsh","position":[0,0,0],"rotation":[0,0,0,1],"scale":[1,1,1]},
+    {"name":"panda_link5","asset":"link5.qmsh","position":[0,0,0],"rotation":[0,0,0,1],"scale":[1,1,1]},
+    {"name":"panda_link6","asset":"link6.qmsh","position":[0,0,0],"rotation":[0,0,0,1],"scale":[1,1,1]},
+    {"name":"panda_link7","asset":"link7.qmsh","position":[0,0,0],"rotation":[0,0,0,1],"scale":[1,1,1]},
+    {"name":"panda_link8","asset":null,"position":[0,0,0],"rotation":[0,0,0,1],"scale":[1,1,1]},
+    {"name":"panda_hand","asset":"hand.qmsh","position":[0,0,0],"rotation":[0,0,0,1],"scale":[1,1,1]},
+    {"name":"panda_leftfinger","asset":"finger.qmsh","position":[0,0,0],"rotation":[0,0,0,1],"scale":[1,1,1]},
+    {"name":"panda_rightfinger","asset":"finger.qmsh","position":[0,0,0],"rotation":[0,0,1,0],"scale":[1,1,1]}
+  ]
+}

@@ -1,0 +1,112 @@
+plugins { id 'com.android.application' }
+
+def fullRuntime = providers.gradleProperty('questNewtonFullRuntime').orElse('false').get().toBoolean()
+def fullRuntimeDir = providers.gradleProperty('questNewtonFullRuntimeDir').orElse('').get()
+if (fullRuntime) {
+    if (!new File(fullRuntimeDir, 'runtime_manifest.json').isFile()) {
+        throw new GradleException('A verified full Newton runtime bundle is required')
+    }
+    apply plugin: 'com.chaquo.python'
+}
+
+def artifactStaging = providers.gradleProperty('questNewtonArtifactStaging').orElse(
+        new File(rootProject.projectDir, '../.qxr-build/artifacts').absolutePath).get()
+def metaSdkRoot = providers.gradleProperty('metaOpenXrSdkRoot').orElse('').get()
+def repoRoot = providers.gradleProperty('questNewtonRepoRoot').orElse(
+        rootProject.projectDir.parentFile.absolutePath).get()
+
+android {
+    namespace 'com.questnewton'
+    compileSdk 34
+    ndkVersion '27.0.12077973'
+
+    defaultConfig {
+        applicationId 'com.questnewton'
+        minSdk 29
+        targetSdk 34
+        versionCode fullRuntime ? 2 : 1
+        versionName fullRuntime ? '2.0-full-runtime' : '1.0'
+        externalNativeBuild {
+            cmake {
+                arguments '-DANDROID_STL=c++_shared',
+                        "-DMETA_OPENXR_SDK_ROOT=${metaSdkRoot}",
+                        "-DQUEST_NEWTON_REPO_ROOT=${repoRoot}",
+                        "-DQUEST_NEWTON_ARTIFACT_DIR=${artifactStaging}",
+                        "-DQUEST_NEWTON_FULL_RUNTIME=${fullRuntime ? 'ON' : 'OFF'}"
+                targets 'quest_newton'
+            }
+        }
+        ndk { abiFilters 'arm64-v8a' }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path file('src/main/cpp/CMakeLists.txt')
+            version '3.22.1'
+        }
+    }
+
+    sourceSets {
+        if (fullRuntime) {
+            debug.manifest.srcFile 'src/full/AndroidManifest.xml'
+            release.manifest.srcFile 'src/full/AndroidManifest.xml'
+        }
+        main {
+            jniLibs.srcDirs = [new File(artifactStaging, 'jniLibs')]
+            assets.srcDirs = [new File(artifactStaging, 'assets')]
+            if (fullRuntime) {
+                java.srcDir 'src/full/java'
+                assets.srcDir new File(fullRuntimeDir, 'assets')
+                res.srcDir new File(metaSdkRoot, 'Samples/SampleXrFramework/res')
+            }
+        }
+    }
+
+    buildFeatures { prefab true }
+    packagingOptions { jniLibs { useLegacyPackaging true } }
+    buildTypes { debug { debuggable true } }
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            output.outputFileName = fullRuntime ? "quest-newton-full-${variant.name}.apk" : "quest-newton-${variant.name}.apk"
+        }
+    }
+}
+
+if (fullRuntime) {
+    def remoteDemoAssets = new File(buildDir, 'generated/remoteScene/assets')
+    def remoteDemoFile = new File(remoteDemoAssets, 'remote_scene/demo.rscn')
+    def generateRemoteDemo = tasks.register('generateRemoteSceneDemo', Exec) {
+        workingDir repoRoot
+        inputs.files(fileTree(new File(repoRoot, 'tools/remote_scene')) { include '*.py' })
+        outputs.file remoteDemoFile
+        outputs.files(new File(remoteDemoAssets, 'remote_scene/demo-prepared.rscn'),
+                new File(remoteDemoAssets, 'remote_scene/demo-unprepared.rscn'),
+                new File(remoteDemoAssets, 'remote_scene/demo-rgb-prepared.rscn'),
+                new File(remoteDemoAssets, 'remote_scene/demo-rgb-unprepared.rscn'))
+        commandLine providers.gradleProperty('questNewtonHostPython').get(), '-m', 'tools.remote_scene.demo',
+                '--output', remoteDemoFile.absolutePath, '--all-modes'
+    }
+    tasks.named('preBuild').configure { dependsOn generateRemoteDemo }
+    android.sourceSets.main.assets.srcDir remoteDemoAssets
+    chaquopy {
+        defaultConfig {
+            version = '3.12'
+            buildPython providers.gradleProperty('questNewtonHostPython').get()
+            extractPackages 'warp', 'newton', 'mujoco', 'mujoco_warp', 'quest_sim'
+            pyc { src = false }
+            pip {
+                options '--no-deps'
+                install new File(fullRuntimeDir, 'wheels/numpy-1.26.2-0-cp312-cp312-android_21_arm64_v8a.whl').absolutePath
+                install new File(fullRuntimeDir, 'wheels/chaquopy_openblas-0.2.20-5-py3-none-android_21_arm64_v8a.whl').absolutePath
+                install new File(fullRuntimeDir, 'wheels/chaquopy_libgfortran-4.9-0-py3-none-android_21_arm64_v8a.whl').absolutePath
+            }
+        }
+        sourceSets {
+            main { srcDirs = ['src/main/python', new File(fullRuntimeDir, 'python')] }
+        }
+    }
+}
+
+dependencies {
+    implementation 'org.khronos.openxr:openxr_loader_for_android:1.1.53'
+}

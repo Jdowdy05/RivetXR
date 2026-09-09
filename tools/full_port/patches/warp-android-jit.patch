@@ -1,0 +1,92 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 734a863..2cd62d3 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -88,7 +88,9 @@ function(warp_set_shared_target_output target output_name)
+             RUNTIME_OUTPUT_DIRECTORY "${WARP_BIN_DIR}"
+     )
+ 
+-    if(NOT APPLE)
++    if(ANDROID)
++        set_target_properties("${target}" PROPERTIES PREFIX "lib")
++    elseif(NOT APPLE)
+         set_target_properties("${target}" PROPERTIES PREFIX "")
+     endif()
+ 
+@@ -365,6 +367,9 @@ if(WIN32)
+     target_link_libraries(warp PRIVATE ws2_32 user32)
+ elseif(APPLE)
+     target_link_options(warp PRIVATE "LINKER:-rpath,@loader_path")
++elseif(ANDROID)
++    target_link_libraries(warp PRIVATE dl log)
++    target_link_options(warp PRIVATE "LINKER:--no-undefined" "LINKER:-z,max-page-size=16384")
+ elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+     warp_add_linux_link_options(warp)
+ endif()
+@@ -419,6 +424,9 @@ if(WARP_BUILD_CLANG)
+         # Repeat LLVM static archives to resolve circular dependencies on macOS.
+         target_link_libraries(warp-clang PRIVATE ${WARP_LLVM_LIBRARIES} ${WARP_LLVM_LIBRARIES} pthread dl)
+         target_link_options(warp-clang PRIVATE "LINKER:-undefined,dynamic_lookup")
++    elseif(ANDROID)
++        target_link_libraries(warp-clang PRIVATE -Wl,--start-group ${WARP_LLVM_LIBRARIES} -Wl,--end-group dl log)
++        target_link_options(warp-clang PRIVATE "LINKER:--no-undefined" "LINKER:--exclude-libs,ALL" "LINKER:-z,max-page-size=16384")
+     elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+         target_link_libraries(
+             warp-clang
+diff --git a/warp/_src/context.py b/warp/_src/context.py
+index 703f6da..5cd8983 100644
+--- a/warp/_src/context.py
++++ b/warp/_src/context.py
+@@ -6359,6 +6359,12 @@ class Runtime:
+             warp_lib = os.path.join(bin_path, "libwarp.dylib")
+             llvm_lib = os.path.join(bin_path, "libwarp-clang.dylib")
+ 
++        elif os.environ.get("WARP_NATIVE_LIBRARY_DIR"):
++            # Android extracts executable libraries to the APK nativeLibraryDir.
++            native_dir = os.environ["WARP_NATIVE_LIBRARY_DIR"]
++            warp_lib = os.path.join(native_dir, "libwarp.so")
++            llvm_lib = os.path.join(native_dir, "libwarp-clang.so")
++
+         else:
+             warp_lib = os.path.join(bin_path, "warp.so")
+             llvm_lib = os.path.join(bin_path, "warp-clang.so")
+diff --git a/warp/native/clang/clang.cpp b/warp/native/clang/clang.cpp
+index a9fc417..dfaef24 100644
+--- a/warp/native/clang/clang.cpp
++++ b/warp/native/clang/clang.cpp
+@@ -201,6 +201,13 @@ static std::unique_ptr<clang::CompilerInstance> create_compiler(
+         args.push_back("-I");
+         args.push_back(extra_include_dirs[i]);
+     }
++#if defined(__ANDROID__)
++    // Chaquopy extracts Warp's native headers and Clang builtin resources into
++    // app-private storage. Never search the desktop SDK path baked into Clang.
++    const std::string resource_dir = std::string(include_dir) + "/clang-resource";
++    args.push_back("-resource-dir");
++    args.push_back(resource_dir.c_str());
++#endif
+     args.push_back("-std=c++17");
+ 
+     switch (get_effective_optimization_level(debug, optimization_level)) {
+diff --git a/warp/native/cuBQL/math/common.h b/warp/native/cuBQL/math/common.h
+index 710786e..77aed66 100644
+--- a/warp/native/cuBQL/math/common.h
++++ b/warp/native/cuBQL/math/common.h
+@@ -20,7 +20,7 @@
+ #include <cfloat>
+ #include <algorithm>
+ #include <sstream>
+-#ifdef __GNUC__
++#if defined(__GNUC__) && !defined(__ANDROID__)
+ # include <execinfo.h>
+ # include <sys/time.h>
+ #endif
+@@ -108,7 +108,7 @@ namespace cuBQL {
+   namespace detail {
+     inline static std::string backtrace()
+     {
+-#ifdef __GNUC__
++#if defined(__GNUC__) && !defined(__ANDROID__)
+       static const int max_frames = 16;
+ 
+       void* buffer[max_frames] = { 0 };

@@ -1,0 +1,2 @@
+# Verified with CPython 3.12. No headset, Newton or camera SDK is required.
+numpy==1.26.2

@@ -1,0 +1,12 @@
+{
+  "joint_names": ["panda_joint1", "panda_joint2", "panda_joint3", "panda_joint4", "panda_joint5", "panda_joint6", "panda_joint7", "panda_finger_joint1", "panda_finger_joint2"],
+  "initial_q": [0, -0.569, 0, -2.810, 0, 3.037, 0.741, 0.04, 0.04],
+  "initial_qd": [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  "lower_limits": [-2.8973, -1.7628, -2.8973, -3.0718, -2.8973, -0.0175, -2.8973, 0, 0],
+  "upper_limits": [2.8973, 1.7628, 2.8973, -0.0698, 2.8973, 3.7525, 2.8973, 0.04, 0.04],
+  "stiffness": [400, 400, 400, 400, 400, 400, 400, 2000, 2000],
+  "damping": [80, 80, 80, 80, 80, 80, 80, 100, 100],
+  "effort_limits": [87, 87, 87, 87, 12, 12, 12, 200, 200],
+  "gravity": [0, 0, 0],
+  "timestep": 0.001
+}

@@ -1,0 +1,4 @@
+add_library(quest_newton_kinematics STATIC src/franka_kinematics.cpp)
+target_include_directories(quest_newton_kinematics PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
+target_compile_features(quest_newton_kinematics PUBLIC cxx_std_20)
+quest_newton_warnings(quest_newton_kinematics)

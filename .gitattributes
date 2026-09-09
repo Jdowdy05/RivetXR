@@ -1,0 +1,2 @@
+# Unified patches encode an unchanged blank line with a single context space.
+tools/full_port/patches/*.patch whitespace=-blank-at-eol
