@@ -1,33 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1440" height="340" viewBox="0 0 1440 340" role="img" aria-labelledby="title desc">
   <title id="title">RIVET XR — Robotic Interaction, Visualization, and Embodied Telepresence</title>
   <desc id="desc">Robot physics inside your headset. Meta Quest 3 family, custom-optimized Newton runtime, native OpenXR rendering and RGB-D inspection.</desc>
-  <defs>
-    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#091321"/><stop offset="1" stop-color="#142b37"/></linearGradient>
-    <linearGradient id="line"><stop stop-color="#b8ff72"/><stop offset="1" stop-color="#4cdbd2"/></linearGradient>
-    <pattern id="grid" width="36" height="36" patternUnits="userSpaceOnUse"><path d="M36 0H0V36" fill="none" stroke="#345260" stroke-opacity=".23" stroke-width="1"/></pattern>
-  </defs>
-  <rect width="1440" height="340" rx="20" fill="url(#bg)"/>
-  <rect x="838" width="602" height="340" rx="20" fill="url(#grid)"/>
-  <path d="M838 0V340" stroke="#42646b" stroke-opacity=".4"/>
-  <g font-family="Segoe UI,Arial,sans-serif">
-    <text x="54" y="57" font-size="18" letter-spacing="4" fill="#b8ff72">ROBOT PHYSICS, INSIDE YOUR HEADSET.</text>
-    <text x="50" y="154" font-size="102" font-weight="750" letter-spacing="2" fill="#f2f7fa">RIVET <tspan fill="#b8ff72">XR</tspan></text>
-    <text x="55" y="195" font-size="25" fill="#b7cbd3">Robotic Interaction, Visualization,</text>
-    <text x="55" y="229" font-size="25" fill="#b7cbd3">and Embodied Telepresence</text>
-    <rect x="54" y="269" width="273" height="36" rx="7" fill="#203c42"/>
-    <text x="69" y="293" font-size="17" font-weight="650" fill="#ddfae2">META QUEST 3 FAMILY</text>
-    <text x="349" y="293" font-size="17" fill="#c1d2db">ON-DEVICE NEWTON · NATIVE OPENXR</text>
+  <rect width="1440" height="340" rx="20" fill="#091321"/>
+  <g font-family="Segoe UI,Arial,sans-serif" text-anchor="middle">
+    <text x="720" y="55" font-size="19" letter-spacing="4" fill="#b8ff72">ROBOT PHYSICS, INSIDE YOUR HEADSET.</text>
+    <text x="720" y="172" font-size="120" font-weight="750" letter-spacing="3" fill="#f2f7fa">RIVET <tspan fill="#b8ff72">XR</tspan></text>
+    <text x="720" y="227" font-size="28" fill="#b7cbd3">Robotic Interaction, Visualization, and Embodied Telepresence</text>
+    <text x="720" y="294" font-size="21" font-weight="600" letter-spacing="1" fill="#ddfae2">META QUEST 3 FAMILY · ON-DEVICE NEWTON · NATIVE OPENXR</text>
   </g>
-  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M945 276L1181 318L1355 245L1135 205Z" stroke="#4b7881" stroke-width="1.4"/>
-    <path d="M968 258L1206 299M996 247L1235 286M1028 233L1264 273M1062 220L1294 261M1016 287L1204 217M1068 297L1254 227M1124 307L1304 236" stroke="#365761"/>
-    <path d="M1012 267V218L1081 176L1055 109L1157 76" stroke="#1c4b50" stroke-width="30"/>
-    <path d="M1012 267V218L1081 176L1055 109L1157 76" stroke="url(#line)" stroke-width="7"/>
-    <path d="M1157 76L1191 91M1191 91L1219 76M1191 91L1206 120" stroke="#b8ff72" stroke-width="5"/>
-    <g fill="#102b36" stroke="#b8ff72" stroke-width="4"><circle cx="1012" cy="218" r="14"/><circle cx="1081" cy="176" r="15"/><circle cx="1055" cy="109" r="13"/><circle cx="1157" cy="76" r="11"/></g>
-    <path d="M1208 232V165L1270 137L1324 168V235L1265 263Z M1208 165L1265 197L1324 168 M1265 197V263" stroke="#55d5dd" stroke-width="2.5"/>
-    <path d="M1191 91L1270 137M1191 91L1324 168M1191 91L1208 165" stroke="#55d5dd" stroke-dasharray="4 8" opacity=".65"/>
-    <path d="M965 61V44H982M1365 61V44H1348M1365 276V293H1348" stroke="#718f98" stroke-width="2"/>
-  </g>
-  <g fill="#b8ff72"><circle cx="1233" cy="215" r="3"/><circle cx="1293" cy="212" r="3"/><circle cx="1266" cy="173" r="3"/><circle cx="1244" cy="148" r="3"/></g>
 </svg>
