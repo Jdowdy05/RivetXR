@@ -34,9 +34,9 @@ a native headset application, rather than a streamed desktop simulator.
     <td><img src="docs/media/depth-inspection.gif" width="100%" alt="Synthetic host preview: calibrated RGB and depth passed through RIVET reconstruction, viewed from moving virtual viewpoints"></td>
   </tr>
   <tr>
-    <td><strong>QUEST RECORDING</strong><br>Controller-driven articulation, virtual objects and passthrough. Local physics runs on the headset.</td>
-    <td><strong>QUEST RECORDING</strong><br>Adjust simulation timing and scene controls without taking off the headset.</td>
-    <td><strong>SYNTHETIC · HOST PREVIEW</strong><br>Rendered camera observations go through the real reconstruction pipeline, then the decoded scene is viewed in motion. <a href="docs/media/inspection-inputs.png">See the RGB-D inputs.</a></td>
+    <td valign="top"><strong>QUEST RECORDING</strong><br>Controller-driven arm and scene objects. Physics on device.</td>
+    <td valign="top"><strong>QUEST RECORDING</strong><br>In-VR timing, settings and controller rays.</td>
+    <td valign="top"><strong>SYNTHETIC</strong><br>Six RGB-D views → reconstructed mesh. Host preview. <a href="docs/media/inspection-inputs.png">Inputs.</a></td>
   </tr>
 </table>
 
