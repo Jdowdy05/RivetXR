@@ -1,4 +1,4 @@
-# Contributing
+# Contributing to RIVET XR
 
 Start with [README.md](README.md) and [docs/BUILDING.md](docs/BUILDING.md).
 Keep changes focused and include the relevant test results in a pull request.

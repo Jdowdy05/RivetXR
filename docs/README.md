@@ -1,8 +1,9 @@
-# Documentation
+# RIVET XR documentation
 
 - [Project quick start](../README.md)
 - [Building and prerequisites](BUILDING.md)
 - [Remote scene streaming, recording and controls](REMOTE_SCENE.md)
+- [Showcase media and reproduction](MEDIA.md)
 - [Third-party notices](../THIRD_PARTY_NOTICES.md)
 - [Contributing](../CONTRIBUTING.md)
 

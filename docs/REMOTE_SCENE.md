@@ -106,7 +106,8 @@ gimbal or fabricate refreshed observations.
 ## Headset first launch and controls
 
 This release supplies source, not a prebuilt APK. After building and installing
-a compatible full-runtime APK, launch **Quest Newton** from the headset's
+a compatible full-runtime APK, launch **Quest Newton** (the legacy application
+label for RIVET XR development builds) from the headset's
 application library. Complete the headset's own boundary setup and wear the
 headset before placing/recentering the robot. App room collisions and the
 headset boundary are separate features.

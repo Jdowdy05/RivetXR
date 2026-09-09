@@ -1,0 +1,2 @@
+-r requirements-remote.txt
+Pillow==12.3.0

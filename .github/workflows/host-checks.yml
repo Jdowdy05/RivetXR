@@ -38,3 +38,7 @@ jobs:
           python -m unittest discover -s tests/remote_scene_transport -v
       - name: Generate every demo representation
         run: python -m tools.remote_scene.demo --output out/demo/remote_scene/demo.rscn --all-modes
+      - name: Check synthetic showcase geometry and image inputs
+        run: |
+          python -m pip install -r requirements-showcase.txt
+          python -m unittest tools.showcase.tests.test_render_inspection -v
