@@ -26,6 +26,7 @@ import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
@@ -78,8 +79,9 @@ public final class RemoteSceneWire implements AutoCloseable {
         }
         try {
             timer.schedule(()->{connectExpired=true;close();},CONNECT_TOTAL_MS,TimeUnit.MILLISECONDS);
-            transport.setSoTimeout(READ_IDLE_MS);transport.setTcpNoDelay(true);
-            transport.connect(new InetSocketAddress(config.address,config.port),CONNECT_MS);
+            // Provider initialization can be slow on a cold JVM. Finish local
+            // setup before opening TCP, so it does not consume the server's
+            // pre-authentication timeout. The total client deadline still runs.
             SSLContext context=SSLContext.getInstance("TLS");
             final byte[] pin=config.pin.clone();
             context.init(null,new TrustManager[]{new X509TrustManager(){
@@ -96,7 +98,10 @@ public final class RemoteSceneWire implements AutoCloseable {
                     }catch(java.security.NoSuchAlgorithmException error){throw new CertificateException("SHA-256 is unavailable",error);}
                 }
             }},null);
-            SSLSocket secure=(SSLSocket)context.getSocketFactory().createSocket(transport,config.address.getHostAddress(),config.port,true);
+            SSLSocketFactory factory=context.getSocketFactory();
+            transport.setSoTimeout(READ_IDLE_MS);transport.setTcpNoDelay(true);
+            transport.connect(new InetSocketAddress(config.address,config.port),CONNECT_MS);
+            SSLSocket secure=(SSLSocket)factory.createSocket(transport,config.address.getHostAddress(),config.port,true);
             synchronized(gate){if(closed){secure.close();throw new IOException("Remote scene connection is closed");}tls=secure;}
             List<String> protocols=new ArrayList<>();
             for(String candidate:secure.getSupportedProtocols())if(candidate.equals("TLSv1.2") || candidate.equals("TLSv1.3"))protocols.add(candidate);
