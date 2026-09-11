@@ -409,7 +409,7 @@ OVRFW::VRMenuObject *SimMenu::Impl::AddStepper(const std::string &label,
 }
 
 void SimMenu::Impl::BuildWidgets() {
-  AddLabel("Newton robot scene", {0.0F, 0.34F, 0.0F}, {280.0F, 46.0F});
+  AddLabel("RIVET XR", {0.0F, 0.34F, 0.0F}, {280.0F, 46.0F});
   for (std::size_t i = 0; i < kTabNames.size(); ++i) {
     tabButtons_[i] =
         AddButton(kTabNames[i], {kTabX[i], 0.25F, 0.0F}, {kTabWidth, 40.0F},

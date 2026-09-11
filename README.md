@@ -114,9 +114,14 @@ video. TLS tests also need OpenSSL; check for skipped tests.
 - **Device demonstrated:** the full CPU simulation on Quest 3S, controller-driven
   virtual arm motion, passthrough and in-VR tools. Quest 3 is a declared target;
   the footage and recorded device checks here use Quest 3S.
+- **Device checked on September 11, 2026:** CPU equivalence, synthetic scene and
+  supported gripper fixtures pass, along with three ARM64 native checks and
+  twelve prepared/unprepared RGB fixture pairs. The launcher and menu now use
+  **RIVET XR**. [Results and limits](docs/VALIDATION.md).
 - **Host verified:** prepared/unprepared RGB reconstruction, bounded retention,
-  protocol compatibility, replay and simulated gimbal control. New RGB headset
-  visuals and simultaneous camera/physics performance still need qualification.
+  protocol compatibility, replay and simulated gimbal control. RGB texture,
+  stereo and live-stream wearer checks remain pending, as does simultaneous
+  camera/physics performance qualification.
 - **Still open:** reliable pinch/lift/place, physical robot and gimbal drivers,
   and walking-robot qualification. The map is observed surface patches, not
   TSDF/SLAM, a watertight world or hidden-surface completion.
